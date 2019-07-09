@@ -2,10 +2,16 @@
   "presets": ["@babel/preset-react", "@babel/preset-env"],
   "plugins": [
     [
-      "@babel/plugin-proposal-decorators", { "legacy": true }],
-      "@babel/plugin-transform-async-to-generator",
-      "@babel/plugin-transform-arrow-functions",
-      "@babel/plugin-proposal-object-rest-spread",
-      "@babel/plugin-transform-runtime"
+      "@babel/plugin-proposal-decorators", { "legacy": true }
+    ],
+    "@babel/plugin-transform-async-to-generator",
+    "@babel/plugin-transform-arrow-functions",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-transform-runtime",
+    ["import", {
+      "libraryName": "antd",
+      "libraryDirectory": "es",
+      "style": "css" // `style: true` 会加载 less 文件
+    }]
   ] 
 }

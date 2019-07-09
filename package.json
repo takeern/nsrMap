@@ -1,5 +1,5 @@
 {
-  "name": "dake-template",
+  "name": "nsrMap",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
@@ -50,7 +50,8 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "@babel/register": "^7.0.0",
-    "ayimg": "^1.3.0",
+    "antd": "^3.20.0",
+    "babel-plugin-import": "^1.12.0",
     "babel-plugin-transform-require-ignore": "^0.1.1",
     "connected-react-router": "^4.5.0",
     "duck-core": "^1.0.22",
@@ -58,8 +59,7 @@
     "isomorphic-fetch": "^2.2.1",
     "koa": "^2.6.2",
     "koa-router": "^7.4.0",
-    "portfinder": "^1.0.19",
-    "react": "^16.6.0",
+    "react": "^16.8.6",
     "react-dom": "^16.6.0",
     "react-redux": "^5.1.0",
     "react-router-config": "^4.4.0-beta.6",
