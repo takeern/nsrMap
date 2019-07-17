@@ -9,6 +9,7 @@ import { ConnectedRouter } from 'connected-react-router';
 
 import routes from './route';
 import AsyncRouter from './asyncRouter.jsx';
+import './static/css/index.less';
 
 
 const creatApp = (initState) => {

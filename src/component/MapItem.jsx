@@ -64,13 +64,14 @@ export default class MapItem extends PureComponent {
         const formWrapStyle = {
             labelCol: { span: 10 },
             wrapperCol: { span: 25 },
-        }
+        };
         const { selectItemPostion, mapArray } = this.props;
-        let currrentSelectItemInfo = null;
-        if (selectItemPostion.x && selectItemPostion.y) {
-            currrentSelectItemInfo = { ...mapArray[selectItemPostion.y][selectItemPostion.x]};
+        let currentSelectItemInfo = null;
+        // console.log(selectItemPostion);
+        if (selectItemPostion && selectItemPostion.x && selectItemPostion.y) {
+            currentSelectItemInfo = { ...mapArray[selectItemPostion.y][selectItemPostion.x] };
         }
-        if (!currrentSelectItemInfo) {
+        if (!currentSelectItemInfo) {
             return null;
         }
         const radioBtn = this.createBtn();
@@ -78,21 +79,21 @@ export default class MapItem extends PureComponent {
         return (
             <Form layout="horizontal" >
                 <Form.Item label="选择位置填充内容" {...formWrapStyle} required={true} >
-                    <Radio.Group  value={currrentSelectItemInfo.type} buttonStyle="solid" onChange={(e) => this.handleChange('type', e.target.value)}>
+                    <Radio.Group  value = {currentSelectItemInfo.type} buttonStyle="solid" onChange={(e) => this.handleChange('type', e.target.value)}>
                         {radioBtn}
                     </Radio.Group>
                 </Form.Item>
                 <Form.Item label="该机器上网价格: " {...formWrapStyle} required={true}>
-                    <InputNumber  value={currrentSelectItemInfo.price} onChange={(value) => this.handleChange('price', value)}/>
+                    <InputNumber  value = {currentSelectItemInfo.price} onChange={(value) => this.handleChange('price', value)}/>
                 </Form.Item>
                 <Form.Item label="机器区域编号: " {...formWrapStyle}>
                     <Col span={4}>
-                        <Input size="large" placeholder="例如:A区" value={currrentSelectItemInfo.areaType} onChange={(e) => this.handleChange('areaType', e.target.value)}/>
+                        <Input size="large" placeholder="例如:A区" value={currentSelectItemInfo.areaType} onChange={(e) => this.handleChange('areaType', e.target.value)}/>
                     </Col>
                 </Form.Item>
                 <Form.Item label="机器编号: " {...formWrapStyle} required={true}>
                     <Col span={4}>
-                        <InputNumber size="large" placeholder="例如: A" value={currrentSelectItemInfo.number} onChange={(value) => this.handleChange('number', value)}/>
+                        <InputNumber size="large" placeholder="例如: A" value={currentSelectItemInfo.number} onChange={(value) => this.handleChange('number', value)}/>
                     </Col>
                 </Form.Item>
             </Form>

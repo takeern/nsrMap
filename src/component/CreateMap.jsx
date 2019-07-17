@@ -9,7 +9,7 @@ class MapAll extends PureComponent {
         super();
 
         const { mapArray, row, column } = this.moduleInit();
-        const histroyList = JSON.parse(window.localStorage.getItem('mapList'));
+        const historyList = JSON.parse(window.localStorage.getItem('mapList'));
         this.state = {
             row, // y
             column, // x
@@ -19,14 +19,14 @@ class MapAll extends PureComponent {
                 areaType: null,
                 type: 0,
             },
-            selectItemPostion: {
+            selectItemPosition: {
                 x: null,
                 y: null,
             },
             itemNumber: 1,
             moduleType: 0,
-            histroyList,
-        }
+            historyList,
+        };
 
         this.handleMapItemChange = this.handleMapItemChange.bind(this);
         this.handleSetChange = this.handleSetChange.bind(this);
@@ -41,14 +41,13 @@ class MapAll extends PureComponent {
         return {
             mapArray, 
             row, 
-            column
+            column,
         };
     }
 
-    setHistroy(mapArray) {
+    setHistory(mapArray) {
         let { row, column, itemNumber } = this.state;
         const key = `${row}X${column}`;
-        const date = new Date();
         let mapList = JSON.parse(window.localStorage.getItem('mapList'));
 
         if (mapList) {
@@ -56,7 +55,7 @@ class MapAll extends PureComponent {
         } else {
             mapList = {
                 [key]: new Date().toLocaleString(),
-            }
+            };
         }
 
         window.localStorage.setItem(`${key}-number`, ++ itemNumber);
@@ -81,7 +80,7 @@ class MapAll extends PureComponent {
     handleSetChange(type, value) {
         const { row, column } = this.state;
         const option = {};
-        const choseItemType = { ... this.state.choseItemType};
+        const choseItemType = { ... this.state.choseItemType };
         switch (type) {
             case ('row'):
                 option.row = value;
@@ -107,10 +106,10 @@ class MapAll extends PureComponent {
                 return this.setState({
                     moduleType: value,
                 });
-            case ('histroyMap'):
-                const [ arr, itemNumber ] = this.onLoadHistroyMap(value);
+            case ('historyMap'):
+                const [ arr, itemNumber ] = this.onLoadHistoryMap(value);
                 if (!arr || !itemNumber) {
-                    return
+                    return null;
                 }
                 option.mapArray = arr;
                 option.itemNumber = itemNumber;
@@ -118,8 +117,8 @@ class MapAll extends PureComponent {
             default:
                 break;
         }
-        this.setState({
-            ...option
+        return this.setState({
+            ...option,
         });
     }
 
@@ -131,37 +130,37 @@ class MapAll extends PureComponent {
         if (option.number === null && this.state.choseItemType.type !== 4) {
             option.number = itemNumber;
             this.setState({
-                itemNumber: ++ itemNumber
+                itemNumber: ++ itemNumber,
             });
         } 
 
-        option = {...choseItemType, ...option};
+        option = { ...choseItemType, ...option };
         const [ ... mapArray ] = this.state.mapArray;
-        mapArray[y][x] = {...mapArray[y][x], ...option};
-        this.setHistroy(mapArray);
+        mapArray[y][x] = { ...mapArray[y][x], ...option };
+        this.setHistory(mapArray);
         this.setState({
             mapArray,
         });
     }
 
-    onLoadHistroyMap(key) {
+    onLoadHistoryMap(key) {
         const arr = JSON.parse(window.localStorage.getItem(key));
         const itemNumber = JSON.parse(window.localStorage.getItem(`${key}-number`));
         return [ arr, itemNumber ];
     }
 
     onSelectItemIdChange(pos) {
-        const { selectItemPostion } = this.state;
-        if (pos.x === selectItemPostion.x && pos.y === selectItemPostion.y) {
-           return;
+        const { selectItemPosition } = this.state;
+        if (pos.x === selectItemPosition.x && pos.y === selectItemPosition.y) {
+            return;
         }
         this.setState({
-            selectItemPostion: pos,
+            selectItemPosition: pos,
         });
     }
 
     render() {
-        const { mapArray, row, column, choseItemType, selectItemPostion, moduleType, histroyList } = this.state;
+        const { mapArray, row, column, choseItemType, selectItemPosition, moduleType, historyList } = this.state;
         return (
             <div>
                 <MapForm 
@@ -170,7 +169,7 @@ class MapAll extends PureComponent {
                     handleSetChange={this.handleSetChange} 
                     choseItemType={choseItemType}
                     moduleType={moduleType}
-                    histroyList={histroyList}
+                    historyList={historyList}
                 />
                 <Map 
                     row={row} 
@@ -180,7 +179,7 @@ class MapAll extends PureComponent {
                     onSelectItemIdChange={this.onSelectItemIdChange}
                 />
                 <MapItem  
-                    selectItemPostion={selectItemPostion} 
+                    selectItemPosition={selectItemPosition} 
                     mapArray={mapArray} 
                     handleMapItemChange={this.handleMapItemChange}
                 />

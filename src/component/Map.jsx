@@ -11,13 +11,11 @@ export default class Map extends PureComponent {
 
     getStyle() {
         const { row, column } = this.props;
-        const wrapWidth = this.state.itemWidth * row;
-        const wrapHight = this.state.itemHeight * column;
         const wrapStyle = {
             width: this.state.itemWidth * column,
             height: this.state.itemHeight * row,
-            margin: '0 auto'
-        }
+            margin: '0 auto',
+        };
         return wrapStyle;
     }
 
@@ -51,7 +49,7 @@ export default class Map extends PureComponent {
             <div style={itemStyle} data-column={x} key={x} dangerouslySetInnerHTML={{
                 __html: `
                 <svg class="icon" aria-hidden="true" style="width: ${itemWidth}; height: ${itemHeight}">
-                    <use xlink:href="#icon-taishidiannaoblack-copy"></use>
+                    <use xlink:href="#icon-computer-red"></use>
                 </svg>
                 `,
             }}>
