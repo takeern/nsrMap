@@ -52,13 +52,7 @@ export default class Header extends PureComponent {
                         }}></div>
                     </div>
                 </div>
-                <div style={{
-                    background: '#e8e8e8',
-                    height: '1px',
-                    color: 'rgba(0,0,0,0.65)',
-                    width: '80vw',
-                    margin: '3px auto',
-                }}></div>
+                <div className='hr'></div>
                 <div style={{
                     display: 'flex',
                     justifyContent: 'center',

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import Header from './Header';
 import Set from './Set';
+import Card from './MapCard';
 
 export default class MapClient extends PureComponent {
     constructor() {
@@ -11,8 +12,11 @@ export default class MapClient extends PureComponent {
             showType: 'icon',
             choosePosition: {},
             chooseItem: null,
-            chooseItems: {},
+            chooseItems: {
+                length: 0,
+            },
             setHour: 1,
+            showCard: false,
         };
         this.wrapRef = React.createRef();
         this.handleClick = this.handleClick.bind(this);
@@ -121,8 +125,25 @@ export default class MapClient extends PureComponent {
         return colEl;
     }
 
+    changeItemState(x, y, state) {
+        const [ ... mapArray ] = this.state.mapArray;
+        const chooseItems = { ... this.state.chooseItems };
+        if (state === 'delete') {
+            mapArray[y][x].selectType = 0;
+            chooseItems[`${x}-${y}`] = null;
+            chooseItems.length --;
+        } else if (state === 'add') {
+            mapArray[y][x].selectType = -1;
+            chooseItems[`${x}-${y}`] = {
+                ... mapArray[y][x],
+                setHour: this.state.setHour,
+            };
+            chooseItems.length ++;
+        }
+        return [ mapArray, chooseItems ];
+    }
+
     handleMapClick(e) {
-        // console.log(document.body.scrollWidth);
         if (!this.wrapRef.current.style.transform) {
             const mainWidth = document.body.scrollWidth;
             const elHeight = this.wrapRef.current.clientHeight;
@@ -141,27 +162,25 @@ export default class MapClient extends PureComponent {
             }
             const x = target.getAttribute('data-column');
             const y = target.parentNode.getAttribute('data-row');
-            if (x && y) {
+            if (x && y
+                && this.state.mapArray[y][x].selectType !== 1
+                && this.state.mapArray[y][x].type !== 4
+                ) {
                 // shouldSend to server
-                const [ ... mapArray ] = this.state.mapArray;
-                const chooseItems = { ... this.state.chooseItems };
+                let { mapArray, chooseItems } = this.state;
+                let chooseItem;
                 const choosePosition = {};
-                let chooseItem = mapArray[y][x];
                 
                 if (mapArray[y][x].selectType === -1) {
                     // 移除改订单
-                    mapArray[y][x].selectType = 0;
-                    chooseItems[`${x}-${y}`] = null;
+                    [ mapArray, chooseItems ] = this.changeItemState(x, y, 'delete');
                     chooseItem = null;
                 } else {
                     // 添加该订单
-                    mapArray[y][x].selectType = -1;
-                    chooseItems[`${x}-${y}`] = {
-                        ... mapArray[y][x],
-                        setHour: this.state.setHour,
-                    }
+                    [ mapArray, chooseItems ] = this.changeItemState(x, y, 'add');
                     choosePosition.x = x;
                     choosePosition.y = y;
+                    chooseItem = mapArray[y][x];
                 }
                 
                 this.setState({
@@ -198,16 +217,41 @@ export default class MapClient extends PureComponent {
                     setHour: value,
                 });
                 break;
+            case('changeCardState'):
+                if (value && this.state.chooseItems.length === 0) {
+                    return;
+                }
+                this.setState({
+                    showCard: value,
+                });
+                break;
+            case('deleteItem'):
+                while(!value.getAttribute('data-delete-key')) {
+                    if (value.className === 'map-client-card') {
+                        break;
+                    } else {
+                        value = value.parentNode;
+                    }
+                }
+                const key = value.getAttribute('data-delete-key');
+                if (key) {
+                    const [ x, y ] = key.split('-');
+                    const [ mapArray, chooseItems ] = this.changeItemState(x, y, 'delete');
+                    this.setState({
+                        chooseItems,
+                        mapArray,
+                    });
+                }
+                break;
             default:
                 break;
         }
     }
 
     render() {
-        const { mapArray, areaWidth, showType, chooseItem, setHour, chooseItems } = this.state;
+        const { mapArray, areaWidth, showType, chooseItem, setHour, chooseItems, showCard } = this.state;
         if (!mapArray) return null;
-        const canSumbit = chooseItems.length === 0;
-
+        const shouldShow = !(chooseItems.length === 0);
         const showList = this.praseMap();
         return (
             <div style={{
@@ -228,7 +272,8 @@ export default class MapClient extends PureComponent {
                     color: 'lightslategray',
                     textAlign: 'center',
                 }}>power by 嘉鱼互娱</div>
-                <Set chooseItem={chooseItem} canSumbit={canSumbit} setHour={setHour} handleClick={this.handleClick}/>
+                <Set chooseItem={chooseItem} shouldShow={shouldShow} setHour={setHour} handleClick={this.handleClick}/>
+                {showCard && <Card showCard={showCard} handleClick={this.handleClick} chooseItems={chooseItems}/>}
             </div>
         );
     }

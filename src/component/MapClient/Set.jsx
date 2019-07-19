@@ -13,7 +13,7 @@ export default class Set extends PureComponent {
                     alignItems: 'center',
                     paddingLeft: 50,
                 }}>
-                    <Tag color="cyan">预付时长</Tag>
+                    <Tag color="cyan">预约时长</Tag>
                     <span>{setHour} /h</span>
                     <div style={{
                         width: '50%',
@@ -44,7 +44,7 @@ export default class Set extends PureComponent {
         return null;
     }
     render() {
-        const { chooseItem, canSumbit } = this.props;
+        const { chooseItem, shouldShow, handleClick } = this.props;
         const showList = this.getShowItem(chooseItem);
         return(
             <div style={{
@@ -62,9 +62,11 @@ export default class Set extends PureComponent {
                     textAlign: 'center',
                     color: 'white',
                     backgroundColor: '#ffab11',
-                    opacity: canSumbit ? 1 : 0.6,
+                    opacity: shouldShow ? 1 : 0.6,
                     fontSize: '18px',
-                }}>确认订单</div>
+                }}
+                onClick={() => handleClick('changeCardState', true)}
+                >确认订单</div>
             </div>
         );
     }
