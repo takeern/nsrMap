@@ -17,6 +17,7 @@ export default class MapClient extends PureComponent {
             },
             setHour: 1,
             showCard: false,
+            shouldShowIconScale: false,
         };
         this.wrapRef = React.createRef();
         this.handleClick = this.handleClick.bind(this);
@@ -143,14 +144,38 @@ export default class MapClient extends PureComponent {
         return [ mapArray, chooseItems ];
     }
 
+    onMoveTo(x, y, starTime, duration, callBack) {
+        const precent = (Date.now() - starTime) / duration;
+        console.log(precent);
+        if (precent < 1) {
+            window.scrollTo(precent * x, precent * y);
+            window.requestAnimationFrame(() => {
+                this.onMoveTo(x, y, starTime, duration, callBack);
+            });
+        } else {
+            window.scrollTo(x, y);
+            callBack();
+        }
+
+    }
+
     handleMapClick(e) {
         if (!this.wrapRef.current.style.transform) {
             const mainWidth = document.body.scrollWidth;
             const elHeight = this.wrapRef.current.clientHeight;
+            const { pageX, pageY } = e;
             this.wrapRef.current.style.transformOrigin = '0 0 0';
             this.wrapRef.current.style.transform = 'scale(2.5)';
-            window.scrollTo(e.pageX / mainWidth * document.body.scrollWidth - document.body.clientWidth / 2, 
-                (e.pageY - 80) / elHeight * (elHeight * 2.5) - document.body.clientHeight / 2);
+            // setTimeout(() => { console.log(e.pageX) }, 1000);
+            
+            setTimeout(() => {
+                this.onMoveTo(pageX / mainWidth * document.body.scrollWidth - document.body.clientWidth / 2, 
+                    (pageY - 80) / elHeight * (elHeight * 2.5) - document.body.clientHeight / 2, Date.now(), 250, () => {
+                        this.setState({
+                            shouldShowIconScale: true,
+                        });
+                    });
+            }, 350);
         } else {
             let { target } = e;
             while(!target.getAttribute('data-column')) {
@@ -199,6 +224,9 @@ export default class MapClient extends PureComponent {
                 if (this.wrapRef.current && this.wrapRef.current.style) {
                     this.wrapRef.current.style.transform = '';
                     window.scrollTo(0, 0);
+                    this.setState({
+                        shouldShowIconScale: false,
+                    });
                 }
                 break;
             case('changeShowType'):
@@ -249,7 +277,7 @@ export default class MapClient extends PureComponent {
     }
 
     render() {
-        const { mapArray, areaWidth, showType, chooseItem, setHour, chooseItems, showCard } = this.state;
+        const { mapArray, areaWidth, showType, chooseItem, setHour, chooseItems, showCard, shouldShowIconScale } = this.state;
         if (!mapArray) return null;
         const shouldShow = !(chooseItems.length === 0);
         const showList = this.praseMap();
@@ -267,11 +295,26 @@ export default class MapClient extends PureComponent {
                     marginTop: 85,
                     padding: `10px ${(10 - areaWidth) / 2}rem`,
                     backgroundColor: '#f3f0f0',
+                    transitionDuration: '0.3s',
                 }}>{showList}</div>
                 <div style={{
                     color: 'lightslategray',
                     textAlign: 'center',
                 }}>power by 嘉鱼互娱</div>
+                {shouldShowIconScale && <div 
+                style={{
+                    position: 'fixed',
+                    bottom: '20vh',
+                    right: '10vw',
+                }}
+                onClick={() => this.handleClick('openMap')}
+                dangerouslySetInnerHTML={{
+                    __html: `
+                    <svg class="icon" aria-hidden="true" style="width: 30px; height: 30px">
+                        <use xlink:href="#icon-ziyuanldpi"></use>
+                    </svg>
+                    `,
+                }}></div>}
                 <Set chooseItem={chooseItem} shouldShow={shouldShow} setHour={setHour} handleClick={this.handleClick}/>
                 {showCard && <Card showCard={showCard} handleClick={this.handleClick} chooseItems={chooseItems}/>}
             </div>

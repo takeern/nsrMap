@@ -21,7 +21,6 @@ export default class Card extends PureComponent {
     }
     showItem() {
         const { chooseItems, handleClick } = this.props;
-        const closeIcon = this.getCloseSvg();
         const showList = [];
         let priceSum = 0;
         let index = 0;
@@ -51,7 +50,7 @@ export default class Card extends PureComponent {
         return [ showList, priceSum ];
     }
     render() {
-        const { chooseItems, handleClick, showCard } = this.props;
+        const { handleClick, showCard } = this.props;
         const [ arr, priceSum ] = this.showItem();
         return (
             <div className='map-client-card'>
@@ -61,10 +60,10 @@ export default class Card extends PureComponent {
                     // onOk={this.handleOk}
                     onCancel={() => handleClick('changeCardState', false)}
                     footer={[
-                    <Button key='back' onClick={() => handleClick('changeCardState', false)}>
+                        <Button key='back' onClick={() => handleClick('changeCardState', false)}>
                         再看看
                     </Button>,
-                    <Button key='submit' type='primary' loading={false} >
+                        <Button key='submit' type='primary' loading={false} >
                         确认支付
                     </Button>,
                     ]}

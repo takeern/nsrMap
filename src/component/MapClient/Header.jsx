@@ -38,18 +38,6 @@ export default class Header extends PureComponent {
                             lineHeight: '30px',
                             height: '30px',
                         }}>{modelText}</div>
-                        <div 
-                        style={{
-                            margin: '0 10px',
-                        }}
-                        onClick={() => handleClick('openMap')}
-                        dangerouslySetInnerHTML={{
-                            __html: `
-                            <svg class="icon" aria-hidden="true" style="width: 30px; height: 30px">
-                                <use xlink:href="#icon-ziyuanldpi"></use>
-                            </svg>
-                            `,
-                        }}></div>
                     </div>
                 </div>
                 <div className='hr'></div>
