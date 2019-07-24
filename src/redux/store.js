@@ -4,8 +4,8 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import home from './home/reducers';
 
 const rootReducer = combineReducers({
-    home,
-  //...
+	home,
+  	//...
 });
 
 
