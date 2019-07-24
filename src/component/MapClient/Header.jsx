@@ -5,7 +5,10 @@ export default class Header extends PureComponent {
         const { handleClick, showType } = this.props;
         const modelText = showType === 'icon' ? '展示编号' : '展示图标';
         return(
-            <div className='map-client-header' style={{
+            <div 
+            onTouchMove={(e) => e.preventDefault()}
+            className='map-client-header' 
+            style={{
                 position: 'fixed',
                 width: '100vw',
                 top: 0,

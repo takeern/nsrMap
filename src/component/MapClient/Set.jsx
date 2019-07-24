@@ -47,7 +47,9 @@ export default class Set extends PureComponent {
         const { chooseItem, shouldShow, handleClick } = this.props;
         const showList = this.getShowItem(chooseItem);
         return(
-            <div style={{
+            <div 
+            onTouchMove={(e) => e.preventDefault()}
+            style={{
                 position: 'fixed',
                 bottom: 0,
                 width: '100%',
