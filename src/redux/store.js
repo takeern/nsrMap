@@ -8,8 +8,6 @@ const rootReducer = combineReducers({
   	//...
 });
 
-
-
 export default (history, preloadedState) => {
     return createStore(
 		connectRouter(history)(rootReducer),

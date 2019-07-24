@@ -179,7 +179,7 @@ export default class MapClient extends PureComponent {
             
             setTimeout(() => {
                 this.onMoveTo(pageX / mainWidth * document.body.scrollWidth - document.body.clientWidth / 2, 
-                    (pageY - 80) / elHeight * (elHeight * 2.5) - document.body.clientHeight / 2, Date.now(), 250, () => {
+                    (pageY - 80) / elHeight * (elHeight * 2.5) - document.body.clientHeight / 2, Date.now(), 0, () => {
                         this.setState({
                             shouldShowIconScale: true,
                         });
@@ -313,14 +313,14 @@ export default class MapClient extends PureComponent {
                 {shouldShowIconScale && <div 
                 style={{
                     position: 'fixed',
-                    bottom: '20vh',
+                    bottom: '25vh',
                     right: '10vw',
                 }}
                 onClick={() => this.handleClick('openMap')}
                 dangerouslySetInnerHTML={{
                     __html: `
                     <svg class="icon" aria-hidden="true" style="width: 30px; height: 30px">
-                        <use xlink:href="#icon-ziyuanldpi"></use>
+                        <use xlink:href="#icon-fangda"></use>
                     </svg>
                     `,
                 }}></div>}

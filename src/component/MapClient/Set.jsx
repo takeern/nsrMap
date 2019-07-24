@@ -54,6 +54,7 @@ export default class Set extends PureComponent {
                 paddingTop: chooseItem ? 15 : 0,
                 background: 'white',
                 boxShadow: 'rgb(240, 241, 242) 0px -2px 8px',
+                touchAction: 'none',
             }}>
                 {chooseItem && showList}
                 <div style={{
