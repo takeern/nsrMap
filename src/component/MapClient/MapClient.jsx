@@ -176,15 +176,12 @@ export default class MapClient extends PureComponent {
             this.wrapRef.current.style.transformOrigin = '0 0 0';
             this.wrapRef.current.style.transform = 'scale(2.5)';
             // setTimeout(() => { console.log(e.pageX) }, 1000);
-            
-            setTimeout(() => {
-                this.onMoveTo(pageX / mainWidth * document.body.scrollWidth - document.body.clientWidth / 2, 
-                    (pageY - 80) / elHeight * (elHeight * 2.5) - document.body.clientHeight / 2, Date.now(), 0, () => {
-                        this.setState({
-                            shouldShowIconScale: true,
-                        });
+            this.onMoveTo(pageX / mainWidth * document.body.scrollWidth - document.body.clientWidth / 2, 
+                (pageY - 80) / elHeight * (elHeight * 2.5) - document.body.clientHeight / 2, Date.now(), 200, () => {
+                    this.setState({
+                        shouldShowIconScale: true,
                     });
-            }, 350);
+            });
         } else {
             let { target } = e;
             while(!target.getAttribute('data-column')) {
@@ -304,7 +301,7 @@ export default class MapClient extends PureComponent {
                     marginTop: 85,
                     padding: `10px ${(10 - areaWidth) / 2}rem`,
                     backgroundColor: '#f3f0f0',
-                    transitionDuration: '0.3s',
+                    // transitionDuration: '0.3s',
                 }}>{showList}</div>
                 <div style={{
                     color: 'lightslategray',

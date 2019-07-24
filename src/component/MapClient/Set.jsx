@@ -2,6 +2,20 @@ import React, { PureComponent } from 'react';
 import { Tag, Slider } from 'antd';
 
 export default class Set extends PureComponent {
+
+    constructor() {
+        super();
+        this.setRef = React.createRef();
+    }
+    componentDidMount() {
+        const handleNotMove = (e) => {
+            event.preventDefault();
+        }
+        this.setRef.current.addEventListener('touchmove', handleNotMove, { passive: false });
+    }
+    componentWillUnmount() {
+        this.setRef.current.addEventListener('touchmove', handleNotMove);
+    }
     getShowItem(item) {
         const { setHour, handleClick } = this.props;
         if(item) {
@@ -47,8 +61,8 @@ export default class Set extends PureComponent {
         const { chooseItem, shouldShow, handleClick } = this.props;
         const showList = this.getShowItem(chooseItem);
         return(
-            <div 
-            onTouchMove={(e) => e.preventDefault()}
+            <div
+            ref={this.setRef}
             style={{
                 position: 'fixed',
                 bottom: 0,
@@ -56,7 +70,6 @@ export default class Set extends PureComponent {
                 paddingTop: chooseItem ? 15 : 0,
                 background: 'white',
                 boxShadow: 'rgb(240, 241, 242) 0px -2px 8px',
-                touchAction: 'none',
             }}>
                 {chooseItem && showList}
                 <div style={{
